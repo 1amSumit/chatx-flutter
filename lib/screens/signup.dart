@@ -1,3 +1,4 @@
+import 'package:chatx/screens/ChatScreen.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -87,7 +88,16 @@ class _SignUpState extends State<SignUp> {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
               elevation: 5.0,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ChatScreen();
+                      },
+                    ),
+                  );
+                },
                 minWidth: 300.0,
                 height: 42.0,
                 child: Text(
