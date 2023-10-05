@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
+  static const String id = "welcome_screen";
 
   @override
   State<Welcome> createState() => _WelcomeState();
@@ -29,14 +30,7 @@ class _WelcomeState extends State<Welcome> {
               height: 40.0,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LoginRegisterScreen();
-                      },
-                    ),
-                  );
+                  Navigator.pushNamed(context, LoginRegisterScreen.id);
                 },
                 child: Text(
                   "Agree and continue",

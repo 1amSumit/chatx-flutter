@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
   const LoginRegisterScreen({super.key});
+  static const String id = "register_screen";
 
   @override
   State<LoginRegisterScreen> createState() => _LoginRegisterScreenState();
@@ -49,14 +50,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
               elevation: 5.0,
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LogIn();
-                      },
-                    ),
-                  );
+                  Navigator.pushNamed(context, LogIn.id);
                 },
                 minWidth: 300.0,
                 height: 42.0,
@@ -75,14 +69,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
               elevation: 5.0,
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SignUp();
-                      },
-                    ),
-                  );
+                  Navigator.pushNamed(context, SignUp.id);
                 },
                 minWidth: 300.0,
                 height: 42.0,

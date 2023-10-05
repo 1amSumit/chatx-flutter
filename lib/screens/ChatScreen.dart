@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
-
+  static const String id = "chat_screen";
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }

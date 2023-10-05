@@ -1,3 +1,7 @@
+import 'package:chatx/screens/ChatScreen.dart';
+import 'package:chatx/screens/login.dart';
+import 'package:chatx/screens/registerScreen.dart';
+import 'package:chatx/screens/signup.dart';
 import 'package:chatx/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +21,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Welcome(),
+      initialRoute: Welcome.id,
+      routes: {
+        Welcome.id: (context) => Welcome(),
+        LoginRegisterScreen.id: (context) => LoginRegisterScreen(),
+        LogIn.id: (constants) => LogIn(),
+        SignUp.id: (context) => SignUp(),
+        ChatScreen.id: (context) => ChatScreen()
+      },
     );
   }
 }

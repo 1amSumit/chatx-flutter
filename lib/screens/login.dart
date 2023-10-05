@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
+  static const String id = "login_screen";
 
   @override
   State<LogIn> createState() => _LogInState();
@@ -89,14 +90,7 @@ class _LogInState extends State<LogIn> {
               elevation: 5.0,
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ChatScreen();
-                      },
-                    ),
-                  );
+                  Navigator.pushNamed(context, ChatScreen.id);
                 },
                 minWidth: 300.0,
                 height: 42.0,
