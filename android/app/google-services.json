@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "939117825264",
+    "project_id": "chatx-3d9fd",
+    "storage_bucket": "chatx-3d9fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939117825264:android:f47ff3940771d0a8418635",
+        "android_client_info": {
+          "package_name": "com.sumit.chatx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpNrNb_-gStEh_T6aETNAwztbbwa6xmhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

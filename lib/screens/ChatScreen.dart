@@ -1,5 +1,7 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import "package:firebase_auth/firebase_auth.dart";
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -9,6 +11,26 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,21 +43,40 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Container(
                 color: Color(0xFFF1D836),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
+                    // Padding(
+                    //   padding: EdgeInsets.all(10.0),
+                    // ),
+                    IconButton(
+                      icon: Icon(FontAwesomeIcons.arrowLeft),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    Icon(FontAwesomeIcons.arrowLeft),
-                    SizedBox(
-                      width: 120.0,
-                    ),
+                    // SizedBox(
+                    //   width: 120.0,
+                    // ),
                     Text(
                       "Chat",
                       style: TextStyle(
-                        fontSize: 32.0,
+                        fontSize: 45.0,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Source Sans 3',
                       ),
+                    ),
+                    TextButton(
+                      child: Text(
+                        "Log out",
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: 'Source Sans 3',
+                            color: Colors.black),
+                      ),
+                      onPressed: () {
+                        _auth.signOut();
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'package:chatx/screens/ChatScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -10,6 +11,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _auth = FirebaseAuth.instance;
+  String email = "";
+  String password = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +38,11 @@ class _SignUpState extends State<SignUp> {
           Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             child: TextField(
-              onChanged: (value) {},
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (value) {
+                email = value;
+              },
               decoration: InputDecoration(
                 hintText: "Enter your Email",
                 contentPadding:
@@ -61,7 +69,11 @@ class _SignUpState extends State<SignUp> {
           Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             child: TextField(
-              onChanged: (value) {},
+              textAlign: TextAlign.center,
+              obscureText: true,
+              onChanged: (value) {
+                password = value;
+              },
               decoration: InputDecoration(
                 hintText: "Enter your Passowrd",
                 contentPadding:
@@ -92,15 +104,16 @@ class _SignUpState extends State<SignUp> {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
               elevation: 5.0,
               child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ChatScreen();
-                      },
-                    ),
-                  );
+                onPressed: () async {
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: password);
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
                 },
                 minWidth: 300.0,
                 height: 42.0,
