@@ -15,13 +15,16 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       body: Column(
         children: [
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 40.0),
-              child: SizedBox(
-                child: Image.asset('images/logo-chatx.png'),
-                width: 200.0,
-                height: 200.0,
+          Hero(
+            tag: "logo",
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.0),
+                child: SizedBox(
+                  child: Image.asset('images/logo-chatx.png'),
+                  width: 200.0,
+                  height: 200.0,
+                ),
               ),
             ),
           ),

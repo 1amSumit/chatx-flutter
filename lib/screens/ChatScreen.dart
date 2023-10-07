@@ -12,14 +12,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFC6AD13),
+      backgroundColor: Color(0xFFF1D836),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Container(
-                color: Color(0xFFC6AD13),
+                color: Color(0xFFF1D836),
                 child: Row(
                   children: [
                     Padding(
@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
               flex: 4,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFC6BFA2),
+                  color: Color(0xFFE4DBBE),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0)),

@@ -9,18 +9,39 @@ class Welcome extends StatefulWidget {
   State<Welcome> createState() => _WelcomeState();
 }
 
-class _WelcomeState extends State<Welcome> {
+class _WelcomeState extends State<Welcome> with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        vsync: this, duration: Duration(seconds: 1), upperBound: 250.0);
+
+    controller.forward();
+
+    controller.addListener(() {
+      setState(() {});
+      print(controller.value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Image(
-              image: AssetImage('images/logo-chatx.png'),
-            ),
-          ),
+          Hero(
+              tag: 'logo',
+              child: Center(
+                child: Container(
+                  height: controller.value,
+                  child: Image(
+                    image: AssetImage('images/logo-chatx.png'),
+                  ),
+                ),
+              )),
           SizedBox(
             height: 60.0,
           ),
