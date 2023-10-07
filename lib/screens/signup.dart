@@ -1,6 +1,7 @@
 import 'package:chatx/screens/ChatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart";
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -14,10 +15,13 @@ class _SignUpState extends State<SignUp> {
   final _auth = FirebaseAuth.instance;
   String email = "";
   String password = "";
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Column(
         children: [
           Hero(
             tag: "logo",
@@ -105,12 +109,16 @@ class _SignUpState extends State<SignUp> {
               elevation: 5.0,
               child: MaterialButton(
                 onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
                     if (newUser != null) {
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
+                    showSpinner = false;
                   } catch (e) {
                     print(e);
                   }
@@ -126,6 +134,6 @@ class _SignUpState extends State<SignUp> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

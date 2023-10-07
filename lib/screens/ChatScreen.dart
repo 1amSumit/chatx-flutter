@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:firebase_auth/firebase_auth.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -13,6 +14,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
+  String messageText = "";
 
   @override
   void initState() {
@@ -103,13 +105,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.0, right: 20.0),
                         child: TextField(
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            messageText = value;
+                          },
                           decoration: InputDecoration(
                             suffixIcon: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
-                              child: Icon(
-                                FontAwesomeIcons.paperPlane,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(FontAwesomeIcons.paperPlane),
                                 color: Colors.yellow[600],
                               ),
                             ),
