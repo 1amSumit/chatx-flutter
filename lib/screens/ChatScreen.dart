@@ -51,14 +51,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF1D836),
+      backgroundColor: Color(0xFFF8D818),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Container(
-                color: Color(0xFFF1D836),
+                color: Color(0xFFF8D818),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -98,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
               flex: 4,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFE4DBBE),
+                  color: Color(0xFFF7EFCB),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0)),
@@ -106,82 +106,107 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 7,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: _firestore.collection("messages").snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            final messages = snapshot.data.docs;
-                            List<Widget> messageWidgets = [];
+                        flex: 7,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30.0),
+                                topRight: Radius.circular(30.0)),
+                          ),
+                          margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream:
+                                _firestore.collection("messages").snapshots(),
+                            builder: (context, snapshot) {
+                              List<Widget> messageWidgets = [];
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.yellow,
+                                  ),
+                                );
+                              }
+                              final messages = snapshot.data!.docs;
+                              print(messages);
 
-                            for (var message in messages) {
-                              final messageText = message["text"];
-                              final messageSender = message["senderField"];
-                              messageWidgets.add(
-                                ListTile(
-                                  title: Text(messageSender),
-                                  subtitle: Text(messageText),
-                                ),
+                              for (var message in messages) {
+                                final messageText = message["text"];
+                                final messageSender = message["senderField"];
+                                messageWidgets.add(
+                                  // ListTile(
+                                  //   title: Text(messageText),
+                                  //   subtitle: Text(messageSender),
+                                  // ),
+                                  MessageBubble(
+                                    message: messageText,
+                                    sender: messageSender,
+                                  ),
+                                );
+                              }
+                              return ListView(
+                                children: messageWidgets,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
                               );
-                            }
-                          }
-                        },
-                      ),
-                    ),
+                            },
+                          ),
+                        )),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        child: TextField(
-                          controller: fieldText,
-                          onChanged: (value) {
-                            messageText = value;
-                          },
-                          decoration: InputDecoration(
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 20.0),
-                              child: IconButton(
-                                onPressed: () {
-                                  clearText();
-                                  _firestore.collection('messages').add({
-                                    "text": messageText,
-                                    "senderField": loggedInUser.email
-                                  });
-                                },
-                                icon: Icon(FontAwesomeIcons.paperPlane),
-                                color: Colors.yellow[600],
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Container(
+                            color: Color(0xFFF7EFCB),
+                            child: TextField(
+                              controller: fieldText,
+                              onChanged: (value) {
+                                messageText = value;
+                              },
+                              decoration: InputDecoration(
+                                suffixIcon: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      clearText();
+                                      _firestore.collection('messages').add({
+                                        "text": messageText,
+                                        "senderField": loggedInUser.email
+                                      });
+                                    },
+                                    icon: Icon(FontAwesomeIcons.paperPlane),
+                                    color: Colors.yellow[300],
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: Color(0xFFDFD9B9),
+                                hintText: "Enter your Email",
+                                hintStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Source Sans 3',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 20.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(32.0),
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFDFD9B9), width: 1.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(32.0)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xFFDFD9B9), width: 2.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(32.0)),
+                                ),
                               ),
                             ),
-                            filled: true,
-                            fillColor: Color(0xFFB2AE94),
-                            hintText: "Enter your Email",
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Source Sans 3',
-                              fontWeight: FontWeight.bold,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(32.0),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFB2AE94), width: 1.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32.0)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFFB2AE94), width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32.0)),
-                            ),
-                          ),
-                        ),
-                      ),
+                          )),
                     )
                   ],
                 ),
@@ -197,3 +222,48 @@ class _ChatScreenState extends State<ChatScreen> {
 // colors : #C6AD13
 // colors : #C6BFA2
 // colors : #B2AE94
+
+// #F8D818
+// #F7EFCB
+// #E9DFA0
+// #F7D918
+// #DFD9B9
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({this.message = "", this.sender = ""});
+  final String message;
+  final String sender;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Material(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Color(0xFFF7D916),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                message,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: 'Source Sans 3',
+                ),
+              ),
+            ),
+          ),
+          Text(
+            sender,
+            style: TextStyle(
+                fontSize: 10.0,
+                fontFamily: "SOurce Sans 3",
+                color: Colors.grey[800]),
+          )
+        ],
+      ),
+    );
+  }
+}
