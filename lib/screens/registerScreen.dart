@@ -53,14 +53,16 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen>
               Padding(
                 padding: EdgeInsets.all(10.0),
               ),
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  width: 140.0,
-                  height: 140.0,
-                  child: Image.asset(
-                    'images/logo-chatx.png',
-                    fit: BoxFit.contain,
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    width: 140.0,
+                    height: 140.0,
+                    child: Image.asset(
+                      'images/logo-chatx.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

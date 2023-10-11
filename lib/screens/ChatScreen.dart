@@ -5,6 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+late User loggedInUser;
+
+final _firestore = FirebaseFirestore.instance;
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   static const String id = "chat_screen";
@@ -14,9 +18,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final fieldText = TextEditingController();
-  final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
   String messageText = "";
 
   void clearText() {
@@ -126,24 +128,25 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 );
                               }
-                              final messages = snapshot.data!.docs;
+                              final messages = snapshot.data!.docs.reversed;
                               print(messages);
 
                               for (var message in messages) {
                                 final messageText = message["text"];
                                 final messageSender = message["senderField"];
+
+                                final currentUser = loggedInUser.email;
+
                                 messageWidgets.add(
-                                  // ListTile(
-                                  //   title: Text(messageText),
-                                  //   subtitle: Text(messageSender),
-                                  // ),
-                                  MessageBubble(
+                                  MessageBubbleSender(
                                     message: messageText,
                                     sender: messageSender,
+                                    isMe: currentUser == messageSender,
                                   ),
                                 );
                               }
                               return ListView(
+                                reverse: true,
                                 children: messageWidgets,
                                 padding: EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 20),
@@ -168,10 +171,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: IconButton(
                                     onPressed: () {
                                       clearText();
-                                      _firestore.collection('messages').add({
-                                        "text": messageText,
-                                        "senderField": loggedInUser.email
-                                      });
+                                      _firestore.collection('messages').add(
+                                        {
+                                          "text": messageText,
+                                          "senderField": loggedInUser.email
+                                        },
+                                      );
                                     },
                                     icon: Icon(FontAwesomeIcons.paperPlane),
                                     color: Colors.yellow[300],
@@ -219,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-// colors : #C6AD13
+// colors : #F8D818
 // colors : #C6BFA2
 // colors : #B2AE94
 
@@ -229,21 +234,34 @@ class _ChatScreenState extends State<ChatScreen> {
 // #F7D918
 // #DFD9B9
 
-class MessageBubble extends StatelessWidget {
-  const MessageBubble({this.message = "", this.sender = ""});
+class MessageBubbleSender extends StatelessWidget {
+  const MessageBubbleSender(
+      {this.message = "", this.sender = "", this.isMe = true});
   final String message;
   final String sender;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Material(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Color(0xFFF7D916),
+            borderRadius: isMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  )
+                : BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  ),
+            color: isMe ? Color(0xFFF7D916) : Color(0xFFE9DFA0),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Text(
